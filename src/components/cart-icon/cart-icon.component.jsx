@@ -7,7 +7,6 @@ import "./cart-icon.styles.scss";
 import { ReactComponent as ShoppingIcon } from "../../img/shopping-bag.svg";
 
 const CartIcon = ({ toggleCartHidden, totalItems }) => {
-  console.log("rendering CartIcon");
   return (
     <div className="cart-icon" onClick={toggleCartHidden}>
       <ShoppingIcon className="shopping-icon" />
