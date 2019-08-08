@@ -48,3 +48,22 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef;
 };
+
+//code for storing shop data in firestore database
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  console.log(objectsToAdd);
+  const collectionRef = firestore.collection(collectionKey);
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    //creates a new place for the document in the collection and assigns a unique ID
+    const newDocRef = collectionRef.doc();
+    //assigns obj to the newly created place and bacthes the set calls, since set can only be called once at a time
+    batch.set(newDocRef, obj);
+  });
+  //actuelly calls batch, and this call returns a promise
+  return await batch.commit();
+};

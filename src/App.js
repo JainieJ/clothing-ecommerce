@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import {
+  auth,
+  createUserProfileDocument,
+  addCollectionAndDocuments
+} from "./firebase/firebase.utils";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -11,11 +15,14 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndRegistrationPage from "./pages/sign-in-and-registration/sign-in-and-registration.component";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 
 class App extends Component {
   unsubscribeFromAuth = null;
   componentDidMount() {
     const { setCurrentUser } = this.props;
+    //the code below is to programmatically add shop data to firestore
+    // const { collectionsArray } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       // createUserProfileDocument(user);
       if (userAuth) {
@@ -30,6 +37,12 @@ class App extends Component {
         setCurrentUser(userAuth);
       }
     });
+    //the code below is to programmatically add shop data to firestore
+    //getting rid of unnecessary properties in collectionsArray, e.g. id, since id is provided by firestore
+    // addCollectionAndDocuments(
+    //   "collections",
+    //   collectionsArray.map(({ title, items }) => ({ title, items }))
+    // );
   }
   componentWillUnmount() {
     this.unsubscribeFromAuth();
@@ -64,6 +77,8 @@ class App extends Component {
 // });
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
+  //the code below is to programmatically add shop data to firestore
+  // collectionsArray: selectCollectionsForPreview
 });
 
 const mapDispatchToProps = dispatch => ({
