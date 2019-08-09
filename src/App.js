@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  auth,
-  createUserProfileDocument,
-  addCollectionAndDocuments
-} from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -15,7 +11,6 @@ import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInAndRegistrationPage from "./pages/sign-in-and-registration/sign-in-and-registration.component";
 import CheckoutPage from "./pages/checkout/checkout.component";
-import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
 
 class App extends Component {
   unsubscribeFromAuth = null;

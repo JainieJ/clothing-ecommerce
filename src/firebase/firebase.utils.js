@@ -64,6 +64,26 @@ export const addCollectionAndDocuments = async (
     //assigns obj to the newly created place and bacthes the set calls, since set can only be called once at a time
     batch.set(newDocRef, obj);
   });
-  //actuelly calls batch, and this call returns a promise
+  //actually calls batch, and this call returns a promise
   return await batch.commit();
+};
+
+//code for retrieving data from firestore
+
+export const convertCollectionsSnapShotToMap = collections => {
+  //collections parameter already represents a snapshot
+  const transformedCollections = collections.docs.map(doc => {
+    //to get data stored in the doc we need to call doc.data()
+    const { items, title } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    };
+  });
+  return transformedCollections.reduce((acc, curr) => {
+    acc[curr.title.toLowerCase()] = curr;
+    return acc;
+  }, {});
 };
